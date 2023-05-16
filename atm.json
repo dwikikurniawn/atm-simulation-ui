@@ -1,0 +1,71 @@
+{
+    "accounts": [
+      {
+        "accountNumber": "112201",
+        "pin": 111111,
+        "name": "Account 1",
+        "transactions": [],
+        "balance": 350
+      },
+      {
+        "accountNumber": "112202",
+        "pin": 111111,
+        "name": "Account 2",
+        "transactions": [],
+        "balance": 350
+      },
+      {
+        "accountNumber": "112203",
+        "pin": 111111,
+        "name": "Account 3",
+        "transactions": [],
+        "balance": 350
+      },
+      {
+        "accountNumber": "112204",
+        "pin": 111111,
+        "name": "Account 4",
+        "transactions": [],
+        "balance": 350
+      },
+      {
+        "accountNumber": "112205",
+        "pin": 111111,
+        "name": "Account 5",
+        "transactions": [],
+        "balance": 350
+      }
+    ],
+    "transactions": [
+      {
+        "sourceAccountNumber": "112201",
+        "recipientAccountNumber": "",
+        "transactionName": "WITHDRAW",
+        "amount": 80
+      },
+      {
+        "sourceAccountNumber": "112201",
+        "recipientAccountNumber": "112202",
+        "transactionName": "TRANSFER",
+        "amount": 50
+      },
+      {
+        "sourceAccountNumber": "112202",
+        "recipientAccountNumber": "112204",
+        "transactionName": "TRANSFER",
+        "amount": 30
+      },
+      {
+        "sourceAccountNumber": "112202",
+        "recipientAccountNumber": "",
+        "transactionName": "WITHDRAW",
+        "amount": 25
+      },
+      {
+        "sourceAccountNumber": "112203",
+        "recipientAccountNumber": "112204",
+        "transactionName": "TRANSFER",
+        "amount": 60
+      }
+    ]
+  }
