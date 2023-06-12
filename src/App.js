@@ -4,7 +4,7 @@ import AccountDashboard from './component/account/AccountDashboard';
 import Login from './component/account/Login';
 import Transfer from './component/transaction/Transfer';
 import OtherTransfer from './component/transaction/OtherTransfer';
-import Withdraw from './component/transaction/withdraw';
+import Withdraw from './component/transaction/Withdraw';
 import GetTransaction from './component/transaction/GetTransaction';
 import NotFound from './NotFound';
 
@@ -13,12 +13,12 @@ function App() {
     <BrowserRouter>
     <div>
     <Routes>
-      <Route path="/account" element={<AccountDashboard/>}/>
+      <Route path="/account/:accountNumber" element={<AccountDashboard/>}/>
       <Route path="/" element={<Login/>}/>
-      <Route path="/transaction" element={<GetTransaction/>}/>
-      <Route path="/transaction/transfer" element={<Transfer/>}/>
+      <Route path="/transaction/history/:accountNumber" element={<GetTransaction/>}/>
+      <Route path="/transaction/transfer/:accountNumber" element={<Transfer/>}/>
       <Route path="/transaction/transfer/other" element={<OtherTransfer/>}/>
-      <Route path="/transaction/withdraw" element={<Withdraw/>}/>
+      <Route path="/transaction/withdraw/:accountNumber" element={<Withdraw/>}/>
       <Route path="/not-found" element={<NotFound/>}/>
       <Route component={NotFound}/>
     </Routes>

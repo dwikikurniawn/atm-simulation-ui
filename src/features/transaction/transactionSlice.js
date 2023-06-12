@@ -17,9 +17,9 @@ export const saveTransaction = createAsyncThunk("transactions/saveTransaction", 
     return response.data;
 });
 
-export const updateTransaction = createAsyncThunk("transactions/updateTransaction", async({TransactionNumber, pin, name}) => {
+export const updateTransaction = createAsyncThunk("transactions/updateTransaction", async({transactionNumber, pin, name}) => {
     const response  = await axios.patch(`http://localhost:5002/transactions/${transactionNumber}`,{
-        TransactionNumber,
+        transactionNumber,
         pin,
         name
     });
@@ -32,7 +32,7 @@ export const deleteTransaction = createAsyncThunk("transactions/deleteTransactio
 });
 
 const transactionEntity = createEntityAdapter({
-    selectId: (transaction) => transaction.transactionNumber
+    selectId: (transaction) => transaction.id
 });
 
 const transactionSlice = createSlice({
