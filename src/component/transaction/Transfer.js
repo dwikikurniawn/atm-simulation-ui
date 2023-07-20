@@ -1,14 +1,18 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../general-component/Header";
 import { useState } from "react";
 import { doTransferTransaction } from "../../features/transaction/transactionSlice";
+import { useDispatch } from "react-redux";
 
 const Transfer = () => {
   const { accountNumber } = useParams();
   const [amount, setAmount] = useState("");
   const [recipientAccountNumber, setRecipientAccountNumber] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const transactionType = "transfer";
+
   const transferTransaction = async (e) => {
     e.preventDefault();
     await dispatch(
@@ -30,7 +34,7 @@ const Transfer = () => {
         <label class="label">Transfer Amount</label>
         <div class="control">
           <input
-            value={transferAmount}
+            value={amount}
             onChange={(e) => setAmount(e.target.value)}
             class="input"
             type="number"
