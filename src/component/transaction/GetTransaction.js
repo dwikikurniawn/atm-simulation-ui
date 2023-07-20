@@ -5,6 +5,7 @@ import {
   transactionSelectors,
 } from "../../features/transaction/transactionSlice";
 import { Link, useParams } from "react-router-dom";
+import Header from "../general-component/Header";
 
 const GetTransaction = () => {
   const dispatch = useDispatch();
@@ -12,17 +13,13 @@ const GetTransaction = () => {
   const { accountNumber } = useParams();
 
   useEffect(() => {
-    dispatch(getTransactions());
+    dispatch(getTransactions(accountNumber));
   }, [dispatch]);
 
   return (
     // <div class='container'>
     <article class="message is-link">
-      <div class="message-header">
-      <img class="is-rounded" width="80" height="28" src="https://www.mitrais.com/wp-content/uploads/2019/11/Mitrais-Favicon.png" />
-        <p>Transaction History</p>
-        <button class="delete" aria-label="delete"></button>
-      </div>
+      <Header title="Transaction History" />
       <div className="box mt-5">
         <table className="table is-striped is-fullwidth">
           <thead class="thead-dark">
@@ -30,8 +27,10 @@ const GetTransaction = () => {
               <th>No</th>
               <th>Source Account Number</th>
               <th>Transaction Type</th>
+              <th>Datetime</th>
               <th>Recipient Account Number</th>
               <th>Amount</th>
+              <th>Reference Number</th>
             </tr>
           </thead>
           <tbody>
@@ -39,16 +38,17 @@ const GetTransaction = () => {
               <tr key={transaction.id}>
                 <td>{index + 1}</td>
                 <td>{transaction.sourceAccountNumber}</td>
-                <td>{transaction.transactionName}</td>
+                <td>{transaction.type}</td>
+                <td>{transaction.time}</td>
                 <td>{transaction.recipientAccountNumber}</td>
                 <td>${transaction.amount}</td>
+                <td>{transaction.referenceNumber}</td>
               </tr>
             ))}
             <tr>
               <Link
                 to={`/account/${accountNumber}`}
-                className="button is-link is-light is-small is-outlined"
-              >
+                className="button is-link is-light is-small is-outlined">
                 Back to Dashboard
               </Link>
             </tr>

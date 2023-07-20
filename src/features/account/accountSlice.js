@@ -8,13 +8,13 @@ import axios from "axios";
 export const getAllAccounts = createAsyncThunk(
   "accounts/getAllAccounts",
   async () => {
-    const response = await axios.get(`http://localhost:5002/accounts`);
+    const response = await axios.get(`http://localhost:8087/accounts`);
     return response.data;
   }
 );
 
 const accountEntity = createEntityAdapter({
-  selectId: (account) => account.accountNumber
+  selectId: (account) => account.accountNumber,
 });
 
 const accountSlice = createSlice({
@@ -23,11 +23,12 @@ const accountSlice = createSlice({
   extraReducers: {
     [getAllAccounts.fulfilled]: (state, action) => {
       accountEntity.setAll(state, action.payload);
-    }
+    },
   },
 });
 
 export const accountSelectors = accountEntity.getSelectors(
   (state) => state.account
 );
+
 export default accountSlice.reducer;

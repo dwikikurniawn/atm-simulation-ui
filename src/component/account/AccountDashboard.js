@@ -5,6 +5,7 @@ import {
   getAllAccounts,
 } from "../../features/account/accountSlice";
 import { Link, useParams } from "react-router-dom";
+import Header from "../general-component/Header";
 
 const AccountDashboard = () => {
   const [balance, setBalance] = useState("");
@@ -30,11 +31,7 @@ const AccountDashboard = () => {
 
   return (
     <article class="message is-link">
-      <div class="message-header">
-        <img width="80" height="28" src="https://www.mitrais.com/wp-content/uploads/2019/11/Mitrais-Favicon.png" />
-        <>Dashboard</>
-        <button class="delete" aria-label="delete"></button>
-      </div>
+      <Header title="Dashboard" />
       <div class="box mt-5">
         <div class="card-content">
           <aside class="menu">
@@ -45,8 +42,8 @@ const AccountDashboard = () => {
               <li class="content is-4">Account Number: {accountNumber}</li>
             </ul>
           </aside>
-          </div>
-          <div class="card-content">
+        </div>
+        <div class="card-content">
           <aside class="menu">
             <p class="menu-label title is-4 ">Transactions</p>
             <ul class="menu-list">
@@ -61,6 +58,11 @@ const AccountDashboard = () => {
                 </Link>
               </li>
               <li>
+                <Link to={`/transaction/deposit/${accountNumber}`}>
+                  Deposit
+                </Link>
+              </li>
+              <li>
                 <Link to={`/transaction/history/${accountNumber}`}>
                   Transaction History
                 </Link>
@@ -68,6 +70,11 @@ const AccountDashboard = () => {
             </ul>
           </aside>
         </div>
+        <Link
+          to={`/`}
+          className="button is-link is-light is-medium is-outlined">
+          Logout
+        </Link>
       </div>
     </article>
   );

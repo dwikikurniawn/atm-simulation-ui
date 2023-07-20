@@ -5,29 +5,29 @@ import Header from "../general-component/Header";
 import { saveTransaction } from "../../features/transaction/transactionSlice";
 import { useDispatch } from "react-redux";
 
-const Withdraw = () => {
+const Deposit = () => {
   const [amount, setAmount] = useState("");
   const { accountNumber } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const transactionType = "withdraw";
+  useEffect(() => {
+    console.log("Deposit amount: " + amount);
+  }, []);
+
+  const transactionType = "deposit";
   const addTransaction = async (e) => {
     e.preventDefault();
     await dispatch(saveTransaction({ amount, accountNumber, transactionType }));
-    alert("Withdraw succeed.");
+    alert("Deposit succeed.");
     navigate(`/account/${accountNumber}`);
   };
 
-  useEffect(() => {
-    console.log("withdrawn amount: " + amount);
-  }, []);
-
   return (
     <article class="message is-link">
-      <Header title="Withdraw" />
+      <Header title="Deposit" />
       <div class="field message-body">
-        <label class="label">Withdrawn Value</label>
+        <label class="label">Deposit Value</label>
         <div class="buttons">
           <button
             class="button"
@@ -62,11 +62,11 @@ const Withdraw = () => {
             type="number"
             max={1000}
             min={10}
-            placeholder="Enter withdrawn value here..."
+            placeholder="Enter deposit value here..."
           />
         </div>
         <p class="help">
-          Enter your withdrawn value with multiplication <strong>10</strong>
+          Enter your deposit value with multiplication <strong>10</strong>
         </p>
         <button
           class="button is-link is-light is-small-medium is-outlined"
@@ -85,4 +85,4 @@ const Withdraw = () => {
   );
 };
 
-export default Withdraw;
+export default Deposit;

@@ -1,58 +1,62 @@
-import {createSlice, createAsyncThunk, createEntityAdapter} from "@reduxjs/toolkit"
+import {
+  createSlice,
+  createAsyncThunk,
+  createEntityAdapter,
+} from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const getTransactions = createAsyncThunk("transactions/getTransactions", async() => {
-    const response  = await axios.get('http://localhost:5002/transactions');
+export const getTransactions = createAsyncThunk(
+  "transactions/getTransactions",
+  async (accountNumber) => {
+    const response = await axios.get(
+      "http://localhost:8087/transaction/api/history?accountNumber=" +
+        accountNumber
+    );
     return response.data;
-});
+  }
+);
 
-export const saveTransaction = createAsyncThunk("transactions/saveTransaction", async({TransactionNumber, pin, name}) => {
-    const response  = await axios.post('http://localhost:5002/transactions',{
-        TransactionNumber,
-        pin,
-        name,
-        transactions: [],
-        balance: 350
-    });
+export const saveTransaction = createAsyncThunk(
+  "transactions/saveTransaction",
+  async ({ amount, accountNumber, transactionType }) => {
+    const response = await axios.post(
+      `http://localhost:8087/transaction/api/${transactionType}?accountNumber=${accountNumber}&amount=${amount}`
+    );
     return response.data;
-});
+  }
+);
 
-export const updateTransaction = createAsyncThunk("transactions/updateTransaction", async({transactionNumber, pin, name}) => {
-    const response  = await axios.patch(`http://localhost:5002/transactions/${transactionNumber}`,{
-        transactionNumber,
-        pin,
-        name
-    });
+export const doTransferTransaction = createAsyncThunk(
+  "transactions/transferTransaction",
+  async ({ amount, accountNumber, recipientAccountNumber }) => {
+    const response = await axios.post(
+      `http://localhost:8087/transaction/api/transfer?accountNumber=${accountNumber}&amount=${amount}&recipientAccountNumber=${recipientAccountNumber}`
+    );
     return response.data;
-});
-
-export const deleteTransaction = createAsyncThunk("transactions/deleteTransactions", async(transactionNumber) => {
-    await axios.delete(`http://localhost:5002/transactions/${transactionNumber}`);
-    return transactionNumber;
-});
+  }
+);
 
 const transactionEntity = createEntityAdapter({
-    selectId: (transaction) => transaction.id
+  selectId: (transaction) => transaction.id,
 });
 
 const transactionSlice = createSlice({
-    name: "transaction",
-    initialState:transactionEntity.getInitialState(),
-    extraReducers:{
-        [getTransactions.fulfilled] : (state, action) => {
-            transactionEntity.setAll(state, action.payload);
-        },
-        [saveTransaction.fulfilled] : (state, action) => {
-            transactionEntity.addOne(state, action.payload);
-        },
-        [updateTransaction.fulfilled] : (state, action) => {
-            transactionEntity.updateOne(state, {transactionNumber: action.payload.transactionNumber, updates:action.payload});
-        },
-        [deleteTransaction.fulfilled] : (state, action) => {
-            transactionEntity.removeOne(state, action.payload);
-        }
-    }
+  name: "transaction",
+  initialState: transactionEntity.getInitialState(),
+  extraReducers: {
+    [getTransactions.fulfilled]: (state, action) => {
+      transactionEntity.setAll(state, action.payload);
+    },
+    [saveTransaction.fulfilled]: (state, action) => {
+      transactionEntity.addOne(state, action.payload);
+    },
+    [doTransferTransaction.fulfilled]: (state, action) => {
+      transactionEntity.addOne(state, action.payload);
+    },
+  },
 });
 
-export const transactionSelectors = transactionEntity.getSelectors(state => state.transaction);
+export const transactionSelectors = transactionEntity.getSelectors(
+  (state) => state.transaction
+);
 export default transactionSlice.reducer;
