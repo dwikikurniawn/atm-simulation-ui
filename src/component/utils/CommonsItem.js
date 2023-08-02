@@ -5,11 +5,6 @@ export const getUser = () => {
   else return null;
 };
 
-// return the token from the session storage
-export const getToken = () => {
-  return sessionStorage.getItem("token") || null;
-};
-
 // remove the token and user from the session storage
 export const removeUserSession = () => {
   sessionStorage.removeItem("user");

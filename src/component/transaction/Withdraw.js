@@ -4,7 +4,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../general-component/Header";
 import { saveTransaction } from "../../features/transaction/transactionSlice";
 import { useDispatch } from "react-redux";
-import { getUser } from "../general-component/CommonsItem";
+import { getUser } from "../utils/CommonsItem";
+import axios from "axios";
 
 const Withdraw = () => {
   const [amount, setAmount] = useState("");
@@ -20,6 +21,22 @@ const Withdraw = () => {
     await dispatch(saveTransaction({ amount, accountNumber, transactionType }));
     alert("Withdraw succeed.");
     navigate(`/dashboard`);
+  };
+
+  const doWithdraw = () => {
+    setError(null);
+    axios
+      .post(
+        `http://localhost:8087/transaction/api/${transactionType}?accountNumber=${accountNumber}&amount=${amount}`
+      )
+      .then((response) => {
+        alert("Withdraw succeed.");
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        if (error.response.data != null) setError(error.response.data.message);
+        else setError("Something went wrong. Please try again later.");
+      });
   };
 
   useEffect(() => {
@@ -80,7 +97,7 @@ const Withdraw = () => {
         <br />
         <button
           class="button is-link is-light is-small-medium is-outlined"
-          onClick={addTransaction}>
+          onClick={doWithdraw}>
           Submit
         </button>
       </div>

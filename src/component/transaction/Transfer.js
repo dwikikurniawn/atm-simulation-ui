@@ -3,7 +3,7 @@ import Header from "../general-component/Header";
 import { useState } from "react";
 import { doTransferTransaction } from "../../features/transaction/transactionSlice";
 import { useDispatch } from "react-redux";
-import { getUser } from "../general-component/CommonsItem";
+import { getUser } from "../utils/CommonsItem";
 
 const Transfer = () => {
   const accountNumber = getUser();

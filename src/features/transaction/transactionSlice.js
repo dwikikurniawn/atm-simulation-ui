@@ -22,6 +22,7 @@ export const saveTransaction = createAsyncThunk(
     const response = await axios.post(
       `http://localhost:8087/transaction/api/${transactionType}?accountNumber=${accountNumber}&amount=${amount}`
     );
+    console.log("response: " + JSON.stringify(response));
     return response;
   }
 );
@@ -49,6 +50,9 @@ const transactionSlice = createSlice({
     },
     [saveTransaction.fulfilled]: (state, action) => {
       transactionEntity.addOne(state, action.payload);
+    },
+    [saveTransaction.rejected]: (state, { error }) => {
+      state.errorMessage = error.message;
     },
     [doTransferTransaction.fulfilled]: (state, action) => {
       transactionEntity.addOne(state, action.payload);

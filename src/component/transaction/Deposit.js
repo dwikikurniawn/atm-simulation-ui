@@ -3,13 +3,15 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../general-component/Header";
 import { saveTransaction } from "../../features/transaction/transactionSlice";
-import { useDispatch } from "react-redux";
-import { getUser } from "../general-component/CommonsItem";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../utils/CommonsItem";
 import axios from "axios";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 const Deposit = () => {
   const [amount, setAmount] = useState("");
   const [error, setError] = useState(null);
+  // const error = useSelector((state) => state.transaction.errorMessage);
   const accountNumber = getUser();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,24 +23,30 @@ const Deposit = () => {
   const transactionType = "deposit";
   const addTransaction = async (e) => {
     e.preventDefault();
-    await dispatch(saveTransaction({ amount, accountNumber, transactionType }));
-    alert("Deposit succeed.");
-    navigate(`/dashboard`);
+    await dispatch(saveTransaction({ amount, accountNumber, transactionType }))
+      .then(unwrapResult)
+      .then((response) => {
+        alert("Deposit succeed.");
+        navigate(`/dashboard`);
+        console.log({ response });
+      })
+      .catch((error) => {
+        console.log({ responseErr: error });
+      });
   };
 
   const doDeposit = () => {
     setError(null);
     axios
       .post(
-        `http://localhost:8087/transaction/api/deposit?accountNumber=${accountNumber}&amount=${amount}`
+        `http://localhost:8087/transaction/api/${transactionType}?accountNumber=${accountNumber}&amount=${amount}`
       )
       .then((response) => {
         alert("Deposit succeed.");
         navigate("/dashboard");
       })
       .catch((error) => {
-        if (error.response.status === 404 || error.response.status === 409)
-          setError(error.response.data.message);
+        if (error.response.data != null) setError(error.response.data.message);
         else setError("Something went wrong. Please try again later.");
       });
   };

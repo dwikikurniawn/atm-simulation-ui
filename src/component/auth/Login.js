@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../general-component/Header";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { setUserSession } from "../general-component/CommonsItem";
+import { setUserSession } from "../utils/CommonsItem";
 
 const Login = () => {
   const history = useNavigate();
@@ -10,6 +10,8 @@ const Login = () => {
   const [pin, setPin] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleLogin = () => {
     setError(null);
@@ -22,12 +24,12 @@ const Login = () => {
       .then((response) => {
         setLoading(false);
         setUserSession(response.data.accountNumber);
+        delay(3000);
         history("/dashboard");
       })
       .catch((error) => {
         setLoading(false);
-        if (error.response.status === 404 || error.response.status === 409)
-          setError(error.response.data.message);
+        if (error.response.data != null) setError(error.response.data.message);
         else setError("Something went wrong. Please try again later.");
       });
   };
@@ -51,7 +53,7 @@ const Login = () => {
             <strong>Enter your account number correctly</strong>
           </p>
         </div>
-        <div class="control">
+        <div class="control" style={{ marginTop: 20 }}>
           <label class="label">PIN</label>
           <input
             value={pin}
@@ -68,7 +70,7 @@ const Login = () => {
         </div>
         {error && (
           <>
-            <small style={{ color: "red" }}>{error}</small>
+            <small style={{ color: "red", fontSize: 18 }}>{error}</small>
             <br />
           </>
         )}

@@ -6,7 +6,7 @@ import {
 } from "../../features/transaction/transactionSlice";
 import { Link, useParams } from "react-router-dom";
 import Header from "../general-component/Header";
-import { getUser } from "../general-component/CommonsItem";
+import { getUser } from "../utils/CommonsItem";
 
 const GetTransaction = () => {
   const dispatch = useDispatch();

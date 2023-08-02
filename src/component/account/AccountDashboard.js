@@ -6,12 +6,11 @@ import {
 } from "../../features/account/accountSlice";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../general-component/Header";
-import { getUser, removeUserSession } from "../general-component/CommonsItem";
+import { getUser, removeUserSession } from "../utils/CommonsItem";
 
 const AccountDashboard = () => {
   const [balance, setBalance] = useState("");
   const [name, setName] = useState("");
-  const history = useNavigate();
   const accountNumber = getUser();
   const dispatch = useDispatch();
   const account = useSelector((state) =>

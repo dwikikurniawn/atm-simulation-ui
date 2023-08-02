@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { removeUserSession } from "./CommonsItem";
+import { removeUserSession } from "../utils/CommonsItem";
 
 function Header({ title }) {
   const history = useNavigate();
@@ -15,12 +15,16 @@ function Header({ title }) {
         src="https://www.mitrais.com/wp-content/uploads/2019/11/Mitrais-Favicon.png"
       />
       <p>{title}</p>
-      <input
-        className="button is-link is-light is-medium-small is-outlined"
-        type="button"
-        onClick={handleLogout}
-        value="Logout"
-      />
+      {title == "Login Page" ? (
+        <button class="delete" aria-label="delete"></button>
+      ) : (
+        <input
+          className="button is-link is-light is-medium-small is-outlined"
+          type="button"
+          onClick={handleLogout}
+          value="Logout"
+        />
+      )}
     </div>
   );
 }
