@@ -6,11 +6,12 @@ import {
 } from "../../features/transaction/transactionSlice";
 import { Link, useParams } from "react-router-dom";
 import Header from "../general-component/Header";
+import { getUser } from "../general-component/CommonsItem";
 
 const GetTransaction = () => {
   const dispatch = useDispatch();
   const transactions = useSelector(transactionSelectors.selectAll);
-  const { accountNumber } = useParams();
+  const accountNumber = getUser();
 
   useEffect(() => {
     dispatch(getTransactions(accountNumber));
@@ -47,7 +48,7 @@ const GetTransaction = () => {
             ))}
             <tr>
               <Link
-                to={`/account/${accountNumber}`}
+                to={`/dashboard`}
                 className="button is-link is-light is-small is-outlined">
                 Back to Dashboard
               </Link>

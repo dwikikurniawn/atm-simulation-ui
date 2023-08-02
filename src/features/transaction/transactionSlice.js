@@ -22,7 +22,7 @@ export const saveTransaction = createAsyncThunk(
     const response = await axios.post(
       `http://localhost:8087/transaction/api/${transactionType}?accountNumber=${accountNumber}&amount=${amount}`
     );
-    return response.data;
+    return response;
   }
 );
 
@@ -32,7 +32,7 @@ export const doTransferTransaction = createAsyncThunk(
     const response = await axios.post(
       `http://localhost:8087/transaction/api/transfer?accountNumber=${accountNumber}&amount=${amount}&recipientAccountNumber=${recipientAccountNumber}`
     );
-    return response.data;
+    return response;
   }
 );
 

@@ -3,10 +3,12 @@ import Header from "../general-component/Header";
 import { useState } from "react";
 import { doTransferTransaction } from "../../features/transaction/transactionSlice";
 import { useDispatch } from "react-redux";
+import { getUser } from "../general-component/CommonsItem";
 
 const Transfer = () => {
-  const { accountNumber } = useParams();
+  const accountNumber = getUser();
   const [amount, setAmount] = useState("");
+  const [error, setError] = useState(null);
   const [recipientAccountNumber, setRecipientAccountNumber] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ const Transfer = () => {
 
   const transferTransaction = async (e) => {
     e.preventDefault();
-    await dispatch(
+    const response = await dispatch(
       doTransferTransaction({
         amount,
         accountNumber,
@@ -23,8 +25,9 @@ const Transfer = () => {
         transactionType,
       })
     );
+    const result = await response;
     alert("Transfer succeed.");
-    navigate(`/account/${accountNumber}`);
+    navigate(`/dashboard`);
   };
 
   return (
@@ -54,6 +57,13 @@ const Transfer = () => {
             placeholder="Enter recipient account number here..."
           />
         </div>
+        {error && (
+          <>
+            <small style={{ color: "red" }}>{error}</small>
+            <br />
+          </>
+        )}
+        <br />
         <button
           class="button is-link is-light is-small-medium is-outlined"
           onClick={transferTransaction}>
@@ -62,7 +72,7 @@ const Transfer = () => {
       </div>
       <div class="message-footer">
         <Link
-          to={`/account/${accountNumber}`}
+          to={`/dashboard`}
           className="button is-link is-light is-small is-outlined">
           Back to Dashboard
         </Link>

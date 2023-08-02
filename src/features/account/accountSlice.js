@@ -13,6 +13,16 @@ export const getAllAccounts = createAsyncThunk(
   }
 );
 
+export const doLogin = createAsyncThunk(
+  "api/login",
+  async (accountNumber, pin) => {
+    const response = await axios.post(
+      `http://localhost:8087/api/login?accountNumber=${accountNumber}&pin=${pin}`
+    );
+    return response.data;
+  }
+);
+
 const accountEntity = createEntityAdapter({
   selectId: (account) => account.accountNumber,
 });

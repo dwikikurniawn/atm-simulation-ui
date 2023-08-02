@@ -4,10 +4,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../general-component/Header";
 import { saveTransaction } from "../../features/transaction/transactionSlice";
 import { useDispatch } from "react-redux";
+import { getUser } from "../general-component/CommonsItem";
+import axios from "axios";
 
 const Deposit = () => {
   const [amount, setAmount] = useState("");
-  const { accountNumber } = useParams();
+  const [error, setError] = useState(null);
+  const accountNumber = getUser();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,7 +23,24 @@ const Deposit = () => {
     e.preventDefault();
     await dispatch(saveTransaction({ amount, accountNumber, transactionType }));
     alert("Deposit succeed.");
-    navigate(`/account/${accountNumber}`);
+    navigate(`/dashboard`);
+  };
+
+  const doDeposit = () => {
+    setError(null);
+    axios
+      .post(
+        `http://localhost:8087/transaction/api/deposit?accountNumber=${accountNumber}&amount=${amount}`
+      )
+      .then((response) => {
+        alert("Deposit succeed.");
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        if (error.response.status === 404 || error.response.status === 409)
+          setError(error.response.data.message);
+        else setError("Something went wrong. Please try again later.");
+      });
   };
 
   return (
@@ -66,17 +86,25 @@ const Deposit = () => {
           />
         </div>
         <p class="help">
-          Enter your deposit value with multiplication <strong>10</strong>
+          Enter your deposit value with value from <strong>1</strong> until{" "}
+          <strong>1000</strong>
         </p>
+        {error && (
+          <>
+            <small style={{ color: "red" }}>{error}</small>
+            <br />
+          </>
+        )}
+        <br />
         <button
           class="button is-link is-light is-small-medium is-outlined"
-          onClick={addTransaction}>
+          onClick={doDeposit}>
           Submit
         </button>
       </div>
       <div class="message-footer">
         <Link
-          to={`/account/${accountNumber}`}
+          to={`/dashboard`}
           className="button is-link is-light is-small is-outlined">
           Back to Dashboard
         </Link>

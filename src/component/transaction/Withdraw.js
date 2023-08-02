@@ -4,19 +4,22 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../general-component/Header";
 import { saveTransaction } from "../../features/transaction/transactionSlice";
 import { useDispatch } from "react-redux";
+import { getUser } from "../general-component/CommonsItem";
 
 const Withdraw = () => {
   const [amount, setAmount] = useState("");
-  const { accountNumber } = useParams();
+  const accountNumber = getUser();
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const transactionType = "withdraw";
+
   const addTransaction = async (e) => {
     e.preventDefault();
     await dispatch(saveTransaction({ amount, accountNumber, transactionType }));
     alert("Withdraw succeed.");
-    navigate(`/account/${accountNumber}`);
+    navigate(`/dashboard`);
   };
 
   useEffect(() => {
@@ -68,6 +71,13 @@ const Withdraw = () => {
         <p class="help">
           Enter your withdrawn value with multiplication <strong>10</strong>
         </p>
+        {error && (
+          <>
+            <small style={{ color: "red" }}>{error}</small>
+            <br />
+          </>
+        )}
+        <br />
         <button
           class="button is-link is-light is-small-medium is-outlined"
           onClick={addTransaction}>
@@ -76,7 +86,7 @@ const Withdraw = () => {
       </div>
       <div class="message-footer">
         <Link
-          to={`/account/${accountNumber}`}
+          to={`/dashboard`}
           className="button is-link is-light is-small is-outlined">
           Back to Dashboard
         </Link>

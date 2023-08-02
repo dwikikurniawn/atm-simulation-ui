@@ -4,14 +4,15 @@ import {
   accountSelectors,
   getAllAccounts,
 } from "../../features/account/accountSlice";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../general-component/Header";
+import { getUser, removeUserSession } from "../general-component/CommonsItem";
 
 const AccountDashboard = () => {
   const [balance, setBalance] = useState("");
   const [name, setName] = useState("");
-
-  const { accountNumber } = useParams();
+  const history = useNavigate();
+  const accountNumber = getUser();
   const dispatch = useDispatch();
   const account = useSelector((state) =>
     accountSelectors.selectById(state, accountNumber)
@@ -48,33 +49,20 @@ const AccountDashboard = () => {
             <p class="menu-label title is-4 ">Transactions</p>
             <ul class="menu-list">
               <li>
-                <Link to={`/transaction/transfer/${accountNumber}`}>
-                  Transfer
-                </Link>
+                <Link to={`/transaction/transfer`}>Transfer</Link>
               </li>
               <li>
-                <Link to={`/transaction/withdraw/${accountNumber}`}>
-                  Withdraw
-                </Link>
+                <Link to={`/transaction/withdraw`}>Withdraw</Link>
               </li>
               <li>
-                <Link to={`/transaction/deposit/${accountNumber}`}>
-                  Deposit
-                </Link>
+                <Link to={`/transaction/deposit`}>Deposit</Link>
               </li>
               <li>
-                <Link to={`/transaction/history/${accountNumber}`}>
-                  Transaction History
-                </Link>
+                <Link to={`/transaction/history`}>Transaction History</Link>
               </li>
             </ul>
           </aside>
         </div>
-        <Link
-          to={`/`}
-          className="button is-link is-light is-medium is-outlined">
-          Logout
-        </Link>
       </div>
     </article>
   );
