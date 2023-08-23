@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getTransactions,
   transactionSelectors,
 } from "../../features/transaction/transactionSlice";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "../general-component/Header";
 import { getUser } from "../utils/CommonsItem";
 
@@ -18,7 +18,6 @@ const GetTransaction = () => {
   }, [dispatch]);
 
   return (
-    // <div class='container'>
     <article class="message is-link">
       <Header title="Transaction History" />
       <div className="box mt-5">
@@ -35,17 +34,21 @@ const GetTransaction = () => {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((transaction, index) => (
-              <tr key={transaction.id}>
-                <td>{index + 1}</td>
-                <td>{transaction.sourceAccountNumber}</td>
-                <td>{transaction.type}</td>
-                <td>{transaction.time}</td>
-                <td>{transaction.recipientAccountNumber}</td>
-                <td>${transaction.amount}</td>
-                <td>{transaction.referenceNumber}</td>
-              </tr>
-            ))}
+            {transactions.length !== 0 ? (
+              transactions.map((transaction, index) => (
+                <tr key={transaction.id}>
+                  <td>{index + 1}</td>
+                  <td>{transaction.sourceAccountNumber}</td>
+                  <td>{transaction.type}</td>
+                  <td>{transaction.time}</td>
+                  <td>{transaction.recipientAccountNumber}</td>
+                  <td>${transaction.amount}</td>
+                  <td>{transaction.referenceNumber}</td>
+                </tr>
+              ))
+            ) : (
+              <div class="message-body">No Transactions</div>
+            )}
             <tr>
               <Link
                 to={`/dashboard`}

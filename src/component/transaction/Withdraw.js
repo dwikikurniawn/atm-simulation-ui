@@ -1,9 +1,6 @@
-import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../general-component/Header";
-import { saveTransaction } from "../../features/transaction/transactionSlice";
-import { useDispatch } from "react-redux";
 import { getUser } from "../utils/CommonsItem";
 import axios from "axios";
 
@@ -11,25 +8,16 @@ const Withdraw = () => {
   const [amount, setAmount] = useState("");
   const accountNumber = getUser();
   const [error, setError] = useState(null);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const transactionType = "withdraw";
-
-  const addTransaction = async (e) => {
-    e.preventDefault();
-    await dispatch(saveTransaction({ amount, accountNumber, transactionType }));
-    alert("Withdraw succeed.");
-    navigate(`/dashboard`);
-  };
 
   const doWithdraw = () => {
     setError(null);
     axios
       .post(
-        `http://localhost:8087/transaction/api/${transactionType}?accountNumber=${accountNumber}&amount=${amount}`
+        `http://localhost:8087/transaction/api/withdraw?accountNumber=${accountNumber}&amount=${amount}`
       )
       .then((response) => {
+        console.log("Withdraw Response Code: " + response.code);
         alert("Withdraw succeed.");
         navigate("/dashboard");
       })
@@ -39,9 +27,9 @@ const Withdraw = () => {
       });
   };
 
-  useEffect(() => {
-    console.log("withdrawn amount: " + amount);
-  }, []);
+  // useEffect(() => {
+  //   console.log("withdrawn amount: " + amount);
+  // }, []);
 
   return (
     <article class="message is-link">
@@ -86,7 +74,8 @@ const Withdraw = () => {
           />
         </div>
         <p class="help">
-          Enter your withdrawn value with multiplication <strong>10</strong>
+          Enter your withdraw value with value from <strong>1</strong> until{" "}
+          <strong>1000</strong>
         </p>
         {error && (
           <>

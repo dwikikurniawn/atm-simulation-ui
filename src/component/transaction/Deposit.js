@@ -1,9 +1,8 @@
-import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../general-component/Header";
 import { saveTransaction } from "../../features/transaction/transactionSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getUser } from "../utils/CommonsItem";
 import axios from "axios";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -16,11 +15,8 @@ const Deposit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("Deposit amount: " + amount);
-  }, []);
-
   const transactionType = "deposit";
+
   const addTransaction = async (e) => {
     e.preventDefault();
     await dispatch(saveTransaction({ amount, accountNumber, transactionType }))
@@ -39,7 +35,7 @@ const Deposit = () => {
     setError(null);
     axios
       .post(
-        `http://localhost:8087/transaction/api/${transactionType}?accountNumber=${accountNumber}&amount=${amount}`
+        `http://localhost:8087/transaction/api/deposit?accountNumber=${accountNumber}&amount=${amount}`
       )
       .then((response) => {
         alert("Deposit succeed.");

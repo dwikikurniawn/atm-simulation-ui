@@ -1,33 +1,30 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../general-component/Header";
 import { useState } from "react";
-import { doTransferTransaction } from "../../features/transaction/transactionSlice";
-import { useDispatch } from "react-redux";
 import { getUser } from "../utils/CommonsItem";
+import axios from "axios";
 
 const Transfer = () => {
   const accountNumber = getUser();
   const [amount, setAmount] = useState("");
   const [error, setError] = useState(null);
   const [recipientAccountNumber, setRecipientAccountNumber] = useState("");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const transactionType = "transfer";
-
-  const transferTransaction = async (e) => {
-    e.preventDefault();
-    const response = await dispatch(
-      doTransferTransaction({
-        amount,
-        accountNumber,
-        recipientAccountNumber,
-        transactionType,
+  const doTransfer = () => {
+    setError(null);
+    axios
+      .post(
+        `http://localhost:8087/transaction/api/transfer?accountNumber=${accountNumber}&amount=${amount}&recipientAccountNumber=${recipientAccountNumber}`
+      )
+      .then(() => {
+        alert("Transfer succeed.");
+        navigate("/dashboard");
       })
-    );
-    const result = await response;
-    alert("Transfer succeed.");
-    navigate(`/dashboard`);
+      .catch((error) => {
+        if (error.response.data != null) setError(error.response.data.message);
+        else setError("Something went wrong. Please try again later.");
+      });
   };
 
   return (
@@ -46,6 +43,10 @@ const Transfer = () => {
             placeholder="Enter transfer amount here..."
           />
         </div>
+        <p class="help">
+          Enter your transfer value with value from <strong>1</strong> until{" "}
+          <strong>1000</strong>
+        </p>
         <label class="label">Recipient Account Number</label>
         <div class="control">
           <input
@@ -66,7 +67,7 @@ const Transfer = () => {
         <br />
         <button
           class="button is-link is-light is-small-medium is-outlined"
-          onClick={transferTransaction}>
+          onClick={doTransfer}>
           Transfer
         </button>
       </div>
