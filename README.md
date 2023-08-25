@@ -22,9 +22,10 @@ The features has some exceptions:
 
 - Transaction amount must start from 1 until 1000.
 - Account Number and pin should only contain number with 6 length.
-- Can't withdrawn or transfer more than current balance.
-- etc.
+- Can't withdrawn or transfer more than current balance, and many more.
+
+## Let's try and have fun!
 
 ###### If you have question/ input or founds some bugs, you can contact me on: dw.kurniawan24@gmail.com
 
-### Thank you!
+# Thank you!
