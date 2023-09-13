@@ -1,41 +1,28 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../general-component/Header";
-import { saveTransaction } from "../../features/transaction/transactionSlice";
-import { useDispatch } from "react-redux";
 import { getUser } from "../utils/CommonsItem";
 import axios from "axios";
-import { unwrapResult } from "@reduxjs/toolkit";
+import { useFormik } from "formik";
 
 const Deposit = () => {
-  const [amount, setAmount] = useState("");
   const [error, setError] = useState(null);
-  // const error = useSelector((state) => state.transaction.errorMessage);
   const accountNumber = getUser();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const transactionType = "deposit";
+  const formik = useFormik({
+    initialValues: {
+      amount: "",
+    },
+  });
 
-  const addTransaction = async (e) => {
-    e.preventDefault();
-    await dispatch(saveTransaction({ amount, accountNumber, transactionType }))
-      .then(unwrapResult)
-      .then((response) => {
-        alert("Deposit succeed.");
-        navigate(`/dashboard`);
-        console.log({ response });
-      })
-      .catch((error) => {
-        console.log({ responseErr: error });
-      });
-  };
+  const transactionType = "deposit";
 
   const doDeposit = () => {
     setError(null);
     axios
       .post(
-        `http://localhost:8087/transaction/api/deposit?accountNumber=${accountNumber}&amount=${amount}`
+        `http://localhost:8087/transaction/api/${transactionType}?accountNumber=${accountNumber}&amount=${formik.values.amount}`
       )
       .then((response) => {
         alert("Deposit succeed.");
@@ -54,34 +41,39 @@ const Deposit = () => {
         <label class="label">Deposit Value</label>
         <div class="buttons">
           <button
+            name="amount"
             class="button"
             value={10}
-            onClick={(e) => setAmount(e.target.value)}>
+            onClick={formik.handleChange}>
             $10
           </button>
           <button
+            name="amount"
             class="button"
             value={20}
-            onClick={(e) => setAmount(e.target.value)}>
+            onClick={formik.handleChange}>
             $20
           </button>
           <button
+            name="amount"
             class="button"
             value={50}
-            onClick={(e) => setAmount(e.target.value)}>
+            onClick={formik.handleChange}>
             $50
           </button>
           <button
+            name="amount"
             class="button"
             value={100}
-            onClick={(e) => setAmount(e.target.value)}>
+            onClick={formik.handleChange}>
             $100
           </button>
         </div>
         <div class="control">
           <input
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            name="amount"
+            value={formik.values.amount}
+            onChange={formik.handleChange}
             class="input"
             type="number"
             max={1000}

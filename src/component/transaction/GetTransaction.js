@@ -7,6 +7,7 @@ import {
 import { Link } from "react-router-dom";
 import Header from "../general-component/Header";
 import { getUser } from "../utils/CommonsItem";
+import DataEmpty from "../general-component/DataEmpty";
 
 const GetTransaction = () => {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const GetTransaction = () => {
                 </tr>
               ))
             ) : (
-              <div class="message-body">No Transactions</div>
+              <DataEmpty />
             )}
             <tr>
               <Link

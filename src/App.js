@@ -2,13 +2,13 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AccountDashboard from "./component/account/AccountDashboard";
 import Login from "./component/auth/Login";
-import NotFound from "./NotFound";
 import Transfer from "./component/transaction/Transfer";
 import GetTransaction from "./component/transaction/GetTransaction";
 import Deposit from "./component/transaction/Deposit";
 import Withdraw from "./component/transaction/Withdraw";
 import PublicRoutes from "./component/utils/PublicRoutes";
 import PrivateRoutes from "./component/utils/PrivateRoutes";
+import NotFound from "./component/general-component/NotFound";
 
 function App() {
   return (

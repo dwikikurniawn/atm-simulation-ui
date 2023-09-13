@@ -5,12 +5,12 @@ export const getUser = () => {
   else return null;
 };
 
-// remove the token and user from the session storage
+// remove user from the session storage
 export const removeUserSession = () => {
   sessionStorage.removeItem("user");
 };
 
-// set the token and user from the session storage
+// set user from the session storage
 export const setUserSession = (user) => {
   sessionStorage.setItem("user", user);
 };
